@@ -13,7 +13,7 @@
  * @param {boolean} [params.filters.noLinks] - -filter:links
  * @returns {string} The constructed query string
  */
-export const buildQuery = ({ keyword, minFaves, minRetweets, since, until, filters = {} }) => {
+export const buildQuery = ({ keyword, minFaves, minRetweets, minReplies, since, until, filters = {} }) => {
     const parts = [];
 
     if (keyword) {
@@ -26,6 +26,10 @@ export const buildQuery = ({ keyword, minFaves, minRetweets, since, until, filte
 
     if (minRetweets) {
         parts.push(`min_retweets:${minRetweets}`);
+    }
+
+    if (minReplies) {
+        parts.push(`min_replies:${minReplies}`);
     }
 
     if (since) {

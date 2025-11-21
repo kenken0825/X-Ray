@@ -5,12 +5,15 @@ import PresetList from './components/PresetList';
 import ExtractionPanel from './components/ExtractionPanel';
 import { getPresets, savePreset, deletePreset } from './utils/storage';
 import { exportToCSV } from './utils/csvExporter';
+import { saveToMarkdown } from './utils/markdownExporter';
+import { Moon, Sun } from 'lucide-react';
 
 function App() {
   const [formData, setFormData] = useState({
     keyword: '',
     minFaves: '',
     minRetweets: '',
+    minReplies: '',
     since: '',
     until: '',
     filters: {
@@ -22,10 +25,30 @@ function App() {
 
   const [presets, setPresets] = useState([]);
   const [extractedTweets, setExtractedTweets] = useState([]);
+  const [theme, setTheme] = useState(() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   useEffect(() => {
     loadPresets();
   }, []);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const loadPresets = async () => {
     const loaded = await getPresets();
@@ -73,6 +96,18 @@ function App() {
     exportToCSV(extractedTweets, `x-ray-export-${new Date().toISOString().slice(0, 10)}.csv`);
   };
 
+  const handleSaveMarkdown = async () => {
+    try {
+      const count = await saveToMarkdown(extractedTweets);
+      if (count > 0) {
+        alert(`${count} files saved to Obsidian folder!`);
+      }
+    } catch (error) {
+      console.error('Markdown save failed:', error);
+      // Alert handled in utility or just log
+    }
+  };
+
   const handleClear = () => {
     if (confirm('Clear all collected data?')) {
       setExtractedTweets([]);
@@ -80,10 +115,19 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white p-4">
-      <header className="mb-6 border-b border-slate-800 pb-4">
-        <h1 className="text-2xl font-bold text-blue-400 tracking-tight">X-Ray</h1>
-        <p className="text-xs text-slate-500 font-medium">Research Cockpit</p>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white p-4 transition-colors duration-300">
+      <header className="mb-6 border-b border-slate-200 dark:border-slate-800 pb-4 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400 tracking-tight">X-Ray</h1>
+          <p className="text-xs text-slate-500 font-medium">Research Cockpit</p>
+        </div>
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        >
+          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
       </header>
 
       <main className="space-y-8">
@@ -95,16 +139,17 @@ function App() {
           />
         </section>
 
-        <section className="border-t border-slate-800 pt-4">
+        <section className="border-t border-slate-200 dark:border-slate-800 pt-4">
           <ExtractionPanel
             count={extractedTweets.length}
             onExtract={handleExtract}
             onDownload={handleDownload}
+            onSaveMarkdown={handleSaveMarkdown}
             onClear={handleClear}
           />
         </section>
 
-        <section className="border-t border-slate-800 pt-4">
+        <section className="border-t border-slate-200 dark:border-slate-800 pt-4">
           <PresetList
             presets={presets}
             onLoad={handleLoadPreset}
