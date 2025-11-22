@@ -36,69 +36,55 @@ const sanitizeFilename = (str) => {
 };
 
 /**
- * IndexedDB helper for storing FileSystemDirectoryHandle
+ * Get saved Obsidian folder path from chrome.storage
  */
-const DB_NAME = 'XRayDB';
-const STORE_NAME = 'folderHandles';
-
-const openDB = () => {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, 1);
-        request.onerror = () => reject(request.error);
-        request.onsuccess = () => resolve(request.result);
-        request.onupgradeneeded = (event) => {
-            const db = event.target.result;
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME);
-            }
-        };
-    });
-};
-
-const saveFolderHandle = async (handle) => {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.put(handle, 'obsidianFolder');
-        request.onsuccess = () => resolve();
-        request.onerror = () => reject(request.error);
-    });
-};
-
-const getFolderHandle = async () => {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_NAME], 'readonly');
-        const store = transaction.objectStore(STORE_NAME);
-        const request = store.get('obsidianFolder');
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
+const getSavedFolderPath = async () => {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(['obsidianFolderPath'], (result) => {
+            resolve(result.obsidianFolderPath || null);
+        });
     });
 };
 
 /**
- * Request folder selection and save handle
+ * Save Obsidian folder path to chrome.storage
+ */
+const saveFolderPath = async (path) => {
+    return new Promise((resolve) => {
+        chrome.storage.local.set({ obsidianFolderPath: path }, () => {
+            resolve();
+        });
+    });
+};
+
+/**
+ * Request folder selection and save path
  */
 export const selectObsidianFolder = async () => {
-    try {
-        const dirHandle = await window.showDirectoryPicker({
-            mode: 'readwrite',
-            startIn: 'documents'
-        });
-        await saveFolderHandle(dirHandle);
-        return dirHandle.name;
-    } catch (error) {
-        if (error.name === 'AbortError') {
-            return null; // User cancelled
-        }
-        console.error('Failed to select folder:', error);
-        throw error;
-    }
+    alert('シンボリックリンクを設定済みの場合、ファイルは自動的にObsidianフォルダに保存されます。\n\nまだ設定していない場合は、OBSIDIAN_SETUP.mdを参照してください。');
+    return 'configured';
 };
 
 /**
- * Save tweets as Markdown files to the selected Obsidian folder.
+ * Download a single markdown file using blob URL
+ */
+const downloadMarkdownFile = (content, filename) => {
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Clean up after a short delay
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+/**
+ * Save tweets as Markdown files to the configured folder.
  * @param {Array} tweets 
  */
 export const saveToMarkdown = async (tweets) => {
@@ -108,54 +94,27 @@ export const saveToMarkdown = async (tweets) => {
     }
 
     try {
-        // Try to get saved folder handle
-        let dirHandle = await getFolderHandle();
-
-        // If no saved handle or permission denied, request new folder
-        if (!dirHandle) {
-            dirHandle = await window.showDirectoryPicker({
-                mode: 'readwrite',
-                startIn: 'documents'
-            });
-            await saveFolderHandle(dirHandle);
-        } else {
-            // Verify we still have permission
-            const permission = await dirHandle.queryPermission({ mode: 'readwrite' });
-            if (permission !== 'granted') {
-                const newPermission = await dirHandle.requestPermission({ mode: 'readwrite' });
-                if (newPermission !== 'granted') {
-                    // Request new folder
-                    dirHandle = await window.showDirectoryPicker({
-                        mode: 'readwrite',
-                        startIn: 'documents'
-                    });
-                    await saveFolderHandle(dirHandle);
-                }
-            }
-        }
-
+        console.log('Starting markdown save...');
         let savedCount = 0;
 
-        // Save each tweet as a separate .md file
+        // Download each tweet as a separate .md file
         for (const tweet of tweets) {
             const dateStr = new Date(tweet.date).toISOString().split('T')[0];
             const handle = tweet.handle.replace('@', '');
             const filename = `${dateStr}_${sanitizeFilename(handle)}_${tweet.id}.md`;
 
-            const fileHandle = await dirHandle.getFileHandle(filename, { create: true });
-            const writable = await fileHandle.createWritable();
-
             const content = formatTweetToMarkdown(tweet);
-            await writable.write(content);
-            await writable.close();
+
+            downloadMarkdownFile(content, filename);
             savedCount++;
+
+            // Small delay to avoid overwhelming the browser
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
+        console.log(`Successfully saved ${savedCount} files`);
         return savedCount;
     } catch (error) {
-        if (error.name === 'AbortError') {
-            return 0; // User cancelled
-        }
         console.error('Failed to save markdown files:', error);
         alert('Markdown保存に失敗しました: ' + error.message);
         throw error;

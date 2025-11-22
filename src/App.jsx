@@ -5,7 +5,7 @@ import PresetList from './components/PresetList';
 import ExtractionPanel from './components/ExtractionPanel';
 import { getPresets, savePreset, deletePreset } from './utils/storage';
 import { exportToCSV } from './utils/csvExporter';
-import { saveToMarkdown } from './utils/markdownExporter';
+import { saveToMarkdown, selectObsidianFolder } from './utils/markdownExporter';
 import { Moon, Sun } from 'lucide-react';
 
 function App() {
@@ -108,6 +108,18 @@ function App() {
     }
   };
 
+  const handleSelectFolder = async () => {
+    try {
+      const folderName = await selectObsidianFolder();
+      if (folderName) {
+        alert(`保存先フォルダを設定しました: ${folderName}`);
+      }
+    } catch (error) {
+      console.error('Folder selection failed:', error);
+      alert('フォルダ選択に失敗しました: ' + error.message);
+    }
+  };
+
   const handleClear = () => {
     if (confirm('Clear all collected data?')) {
       setExtractedTweets([]);
@@ -145,6 +157,7 @@ function App() {
             onExtract={handleExtract}
             onDownload={handleDownload}
             onSaveMarkdown={handleSaveMarkdown}
+            onSelectFolder={handleSelectFolder}
             onClear={handleClear}
           />
         </section>
