@@ -1,4 +1,4 @@
-import { Search, Save, Calendar, Heart, Repeat, Image, Video, Link as LinkIcon, MessageCircle, User } from 'lucide-react';
+import { Search, Save, Calendar, Heart, Repeat, Image, Video, Link as LinkIcon, MessageCircle, User, Bookmark } from 'lucide-react';
 import { buildQuery } from '../utils/queryBuilder';
 
 export default function SearchForm({ formData, onChange, onSavePreset }) {
@@ -84,6 +84,15 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
         const name = prompt('Enter a name for this preset:');
         if (name) {
             onSavePreset(name, formData);
+        }
+    };
+
+    const handleOpenBookmarks = () => {
+        const url = 'https://x.com/i/bookmarks';
+        if (typeof chrome !== 'undefined' && chrome.tabs) {
+            chrome.tabs.update({ url });
+        } else {
+            window.open(url, '_blank');
         }
     };
 
@@ -251,6 +260,18 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         label="リンク除外"
                     />
                 </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+                <button
+                    onClick={handleOpenBookmarks}
+                    data-testid="open-bookmarks-button"
+                    className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-200 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                >
+                    <Bookmark size={14} />
+                    ブックマークを開く
+                </button>
             </div>
 
             {/* Actions */}
