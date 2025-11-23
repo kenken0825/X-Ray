@@ -137,7 +137,7 @@ function App() {
               <img src="/icon.png" alt="X-Ray" className="relative w-7 h-7 rounded-full bg-white dark:bg-slate-800 object-cover" />
             </div>
             <div>
-              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 tracking-tight drop-shadow-sm">X-Ray</h1>
+              <h1 className={`text-lg font-bold tracking-tight drop-shadow-sm ${theme === 'dark' ? 'text-white' : 'bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600'}`}>X-Ray</h1>
             </div>
           </div>
           <button

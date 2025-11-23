@@ -18,28 +18,51 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
     };
 
     const handleGetCurrentUser = async () => {
-        const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-        if (!tab || !tab.url) return;
-
         try {
-            const url = new URL(tab.url);
-            if (url.hostname === 'x.com' || url.hostname === 'twitter.com') {
-                const pathParts = url.pathname.split('/').filter(Boolean);
-                if (pathParts.length > 0) {
-                    // The first part of the path is usually the username (e.g., x.com/username)
-                    // Exclude reserved paths if necessary, but simple extraction is usually enough
-                    const username = pathParts[0];
-                    if (!['home', 'explore', 'notifications', 'messages', 'search'].includes(username)) {
-                        onChange({ ...formData, fromUser: username });
+            if (typeof chrome !== 'undefined' && chrome.tabs) {
+                // Helper to get active tab with fallbacks
+                const getActiveTab = async () => {
+                    // Try 1: Standard query for active tab in last focused window
+                    let tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+                    if (tabs && tabs.length > 0 && (tabs[0].url.includes('x.com') || tabs[0].url.includes('twitter.com'))) return tabs[0];
+
+                    // Try 2: Active tab in current window
+                    tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+                    if (tabs && tabs.length > 0 && (tabs[0].url.includes('x.com') || tabs[0].url.includes('twitter.com'))) return tabs[0];
+
+                    // Try 3: Specific query for active X/Twitter tabs (requires 'tabs' permission)
+                    // This is the most robust way if focus is ambiguous
+                    tabs = await chrome.tabs.query({ url: ['*://x.com/*', '*://twitter.com/*'], active: true });
+                    if (tabs && tabs.length > 0) return tabs[0];
+
+                    return null;
+                };
+
+                const tab = await getActiveTab();
+
+                if (tab && tab.url) {
+                    const url = new URL(tab.url);
+                    if (url.hostname === 'x.com' || url.hostname === 'twitter.com') {
+                        const pathParts = url.pathname.split('/').filter(Boolean);
+                        // Handle /username and /username/status/123...
+                        if (pathParts.length > 0 && !['home', 'explore', 'notifications', 'messages', 'search', 'settings'].includes(pathParts[0])) {
+                            handleChange({ target: { name: 'fromUser', value: pathParts[0] } });
+                        } else {
+                            alert('ユーザープロフィールまたはツイートページを開いてください');
+                        }
                     } else {
-                        alert('ユーザープロフィールページを開いてください');
+                        alert('X (Twitter) のページを開いてください');
                     }
+                } else {
+                    console.warn('No active tab found');
+                    alert('有効なタブが見つかりませんでした。X (Twitter) のページをアクティブにしてください。');
                 }
             } else {
                 alert('X (Twitter) のページを開いてください');
             }
         } catch (e) {
-            console.error('Failed to parse URL', e);
+            console.error('Failed to get current user', e);
+            alert('エラーが発生しました: ' + e.message);
         }
     };
 
