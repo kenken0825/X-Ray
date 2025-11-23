@@ -149,6 +149,52 @@ const extractTweets = () => {
 
             console.log(`  Final metrics - Likes: ${likes}, Retweets: ${retweets}, Replies: ${replies}`);
 
+            // === IMPRESSIONS EXTRACTION ===
+            // Impressions (views) are only visible on own tweets
+            // Try to extract from analytics link or view count element
+            let impressions = 0;
+
+            // Strategy 1: Look for analytics/views link or element
+            // Common patterns: "○○ views", "○○ 回表示", aria-label with "view"
+            const allLinks = article.querySelectorAll('a[href*="analytics"], span');
+            for (const el of allLinks) {
+                const ariaLabel = el.getAttribute('aria-label') || '';
+                const text = el.textContent || '';
+
+                // Check for view/impression indicators (English & Japanese)
+                if (ariaLabel.toLowerCase().includes('view') || ariaLabel.includes('表示') ||
+                    text.includes('views') || text.includes('回表示')) {
+
+                    console.log(`  Found potential impressions element: "${ariaLabel || text}"`);
+
+                    // Extract number
+                    const match = (ariaLabel + text).match(/(\d+(?:,\d+)*(?:\.\d+)?[KMB]?)/);
+                    if (match) {
+                        let value = match[1].replace(/,/g, '');
+                        let multiplier = 1;
+
+                        if (value.endsWith('K')) {
+                            multiplier = 1000;
+                            value = value.slice(0, -1);
+                        } else if (value.endsWith('M')) {
+                            multiplier = 1000000;
+                            value = value.slice(0, -1);
+                        } else if (value.endsWith('B')) {
+                            multiplier = 1000000000;
+                            value = value.slice(0, -1);
+                        }
+
+                        impressions = Math.round(parseFloat(value) * multiplier);
+                        console.log(`  ✓ Extracted impressions: ${impressions}`);
+                        break;
+                    }
+                }
+            }
+
+            if (impressions === 0) {
+                console.log('  Impressions not found (likely not own tweet or not visible)');
+            }
+
             // Construct Tweet Object
             const tweet = {
                 name: nameElement?.innerText || 'Unknown',
@@ -159,6 +205,7 @@ const extractTweets = () => {
                 likes: likes,
                 retweets: retweets,
                 replies: replies,
+                impressions: impressions, // Will be 0 if not available
                 id: statusLink ? statusLink.split('/').pop() : Date.now().toString() + Math.random()
             };
 

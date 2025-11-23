@@ -13,13 +13,14 @@ url: ${tweet.url}
 likes: ${tweet.likes || 0}
 retweets: ${tweet.retweets || 0}
 replies: ${tweet.replies || 0}
+impressions: ${tweet.impressions || 0}
 ---
 
 # Tweet by ${tweet.name} (@${tweet.handle.replace('@', '')})
 
 **Date:** ${new Date(tweet.date).toLocaleString()}
 **URL:** [Link](${tweet.url})
-**Engagement:** ❤️ ${tweet.likes || 0} | 🔄 ${tweet.retweets || 0} | 💬 ${tweet.replies || 0}
+**Engagement:** ❤️ ${tweet.likes || 0} | 🔄 ${tweet.retweets || 0} | 💬 ${tweet.replies || 0}${tweet.impressions > 0 ? ` | 👁 ${tweet.impressions.toLocaleString()}` : ''}
 
 > ${tweet.text.replace(/\n/g, '\n> ')}
 
