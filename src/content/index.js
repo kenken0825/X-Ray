@@ -19,8 +19,17 @@ const extractTweets = () => {
 
             // User Info
             const userElement = article.querySelector('div[data-testid="User-Name"]');
-            const nameElement = userElement?.querySelector('span span');
-            const handleElement = userElement?.querySelector('a[href^="/"] span');
+            const nameElement = userElement?.querySelector('span span'); // Display Name (e.g. "KenKen")
+
+            // Handle extraction: Best to get it from the profile link href to avoid display name confusion
+            // The profile link usually starts with / and doesn't have /status/
+            const profileLink = Array.from(userElement?.querySelectorAll('a') || []).find(a => {
+                const href = a.getAttribute('href');
+                return href && href.startsWith('/') && !href.includes('/status/');
+            });
+
+            const handleText = profileLink ? profileLink.getAttribute('href').substring(1) : 'Unknown'; // Remove leading /
+            const handle = `@${handleText}`; // Add @ prefix for consistency
 
             // Text
             const textElement = article.querySelector('div[data-testid="tweetText"]');
@@ -37,7 +46,7 @@ const extractTweets = () => {
             }
 
             console.log(`  User: ${nameElement?.innerText || 'Unknown'}`);
-            console.log(`  Handle: ${handleElement?.innerText || 'Unknown'}`);
+            console.log(`  Handle: ${handle}`);
 
             // === METRICS EXTRACTION WITH EXTENSIVE LOGGING ===
 
@@ -198,7 +207,7 @@ const extractTweets = () => {
             // Construct Tweet Object
             const tweet = {
                 name: nameElement?.innerText || 'Unknown',
-                handle: handleElement?.innerText || 'Unknown',
+                handle: handle,
                 text: textElement?.innerText || '',
                 date: date || new Date().toISOString(),
                 url: statusLink ? `https://x.com${statusLink}` : '',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Database, Trash, FileText, Folder } from 'lucide-react';
+import { Download, Database, Trash2, FileText, Folder } from 'lucide-react';
 
 export default function ExtractionPanel({ onExtract, onDownload, onSaveMarkdown, onSelectFolder, onClear, count }) {
     return (
@@ -71,7 +71,7 @@ export default function ExtractionPanel({ onExtract, onDownload, onSaveMarkdown,
                             : 'text-slate-300 dark:text-slate-700 cursor-not-allowed'
                             }`}
                     >
-                        <Trash size={12} />
+                        <Trash2 size={12} />
                         データをクリア
                     </button>
                 </div>
