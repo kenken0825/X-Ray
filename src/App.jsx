@@ -17,6 +17,7 @@ function App() {
     minReplies: '',
     since: '',
     until: '',
+    language: '',
     filters: {
       images: false,
       videos: false,

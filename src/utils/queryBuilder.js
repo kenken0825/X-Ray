@@ -13,7 +13,7 @@
  * @param {boolean} [params.filters.noLinks] - -filter:links
  * @returns {string} The constructed query string
  */
-export const buildQuery = ({ keyword, fromUser, minFaves, minRetweets, minReplies, since, until, filters = {} }) => {
+export const buildQuery = ({ keyword, fromUser, minFaves, minRetweets, minReplies, since, until, language, filters = {} }) => {
     const parts = [];
 
     if (keyword) {
@@ -42,6 +42,10 @@ export const buildQuery = ({ keyword, fromUser, minFaves, minRetweets, minReplie
 
     if (until) {
         parts.push(`until:${until}`);
+    }
+
+    if (language) {
+        parts.push(`lang:${language}`);
     }
 
     if (filters.images) {

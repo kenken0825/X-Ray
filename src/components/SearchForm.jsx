@@ -204,6 +204,21 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                 </div>
             </div>
 
+            {/* Language Filter */}
+            <div className="group">
+                <label className="block text-[10px] font-bold text-slate-500 dark:text-white mb-1 uppercase tracking-wider">言語</label>
+                <select
+                    name="language"
+                    value={formData.language || ''}
+                    onChange={handleChange}
+                    className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+                >
+                    <option value="">すべての言語</option>
+                    <option value="en">英語のみ</option>
+                    <option value="ja">日本語のみ</option>
+                </select>
+            </div>
+
             {/* Filters */}
             <div>
                 <label className="block text-[10px] font-bold text-slate-500 dark:text-white mb-1.5 uppercase tracking-wider">フィルタ</label>
