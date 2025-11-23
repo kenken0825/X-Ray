@@ -10,14 +10,16 @@ date: ${tweet.date}
 handle: ${tweet.handle}
 name: "${tweet.name}"
 url: ${tweet.url}
-likes: ${tweet.likes}
-retweets: ${tweet.retweets}
+likes: ${tweet.likes || 0}
+retweets: ${tweet.retweets || 0}
+replies: ${tweet.replies || 0}
 ---
 
 # Tweet by ${tweet.name} (@${tweet.handle.replace('@', '')})
 
 **Date:** ${new Date(tweet.date).toLocaleString()}
 **URL:** [Link](${tweet.url})
+**Engagement:** ❤️ ${tweet.likes || 0} | 🔄 ${tweet.retweets || 0} | 💬 ${tweet.replies || 0}
 
 > ${tweet.text.replace(/\n/g, '\n> ')}
 

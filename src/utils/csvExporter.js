@@ -17,6 +17,7 @@ export const exportToCSV = (data, filename = 'tweets.csv') => {
         { label: 'URL', key: 'url' },
         { label: 'Likes', key: 'likes' },
         { label: 'Retweets', key: 'retweets' },
+        { label: 'Replies', key: 'replies' },
     ];
 
     // Header row

@@ -34,11 +34,12 @@ const extractTweets = () => {
             const adIndicator = Array.from(article.querySelectorAll('span')).find(el => el.innerText === 'Ad' || el.innerText === 'Promoted');
             if (adIndicator) return;
 
-            // Metrics (Likes, RTs) - This is tricky as selectors change often. 
+            // Metrics (Likes, RTs, Replies) - This is tricky as selectors change often. 
             // We look for aria-labels like "100 likes" or specific testids if available.
             // data-testid="reply", "retweet", "like"
             const likeElement = article.querySelector('div[data-testid="like"]');
             const retweetElement = article.querySelector('div[data-testid="retweet"]');
+            const replyElement = article.querySelector('div[data-testid="reply"]');
 
             const parseMetric = (el) => {
                 if (!el) return 0;
@@ -61,6 +62,7 @@ const extractTweets = () => {
                 url: statusLink ? `https://x.com${statusLink}` : '',
                 likes: parseMetric(likeElement),
                 retweets: parseMetric(retweetElement),
+                replies: parseMetric(replyElement),
                 id: statusLink ? statusLink.split('/').pop() : Date.now().toString() + Math.random()
             };
 
