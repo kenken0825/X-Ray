@@ -137,7 +137,7 @@ function App() {
               <img src="/icon.png" alt="X-Ray" className="relative w-8 h-8 rounded-full bg-white dark:bg-slate-800 object-cover" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 tracking-tight">X-Ray</h1>
+              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 tracking-tight drop-shadow-sm">X-Ray</h1>
               <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Research Cockpit</p>
             </div>
           </div>

@@ -68,7 +68,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
         <div className="space-y-5">
             {/* Keyword */}
             <div className="group">
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">キーワード</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 uppercase tracking-wide">キーワード</label>
                 <div className="relative transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/20 rounded-xl">
                     <input
                         type="text"
@@ -76,15 +76,15 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         value={formData.keyword}
                         onChange={handleChange}
                         placeholder="検索ワードを入力..."
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 pl-10 transition-all duration-200 placeholder:text-slate-400"
+                        className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 pl-10 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     />
-                    <Search className="absolute left-3.5 top-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
+                    <Search className="absolute left-3.5 top-3 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors" size={16} />
                 </div>
             </div>
 
             {/* From User */}
             <div className="group">
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">ユーザー指定 (From)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 uppercase tracking-wide">ユーザー指定 (From)</label>
                 <div className="flex gap-2">
                     <div className="relative flex-1 transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/20 rounded-xl">
                         <input
@@ -93,13 +93,13 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                             value={formData.fromUser}
                             onChange={handleChange}
                             placeholder="ユーザー名 (@なし)"
-                            className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 pl-10 transition-all duration-200 placeholder:text-slate-400"
+                            className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-slate-800 pl-10 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                         />
-                        <User className="absolute left-3.5 top-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
+                        <User className="absolute left-3.5 top-3 text-slate-400 dark:text-slate-500 group-focus-within:text-blue-500 transition-colors" size={16} />
                     </div>
                     <button
                         onClick={handleGetCurrentUser}
-                        className="bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-sm transition-all duration-200"
+                        className="bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2.5 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-sm transition-all duration-200"
                         title="現在のタブからユーザー名を取得"
                     >
                         <User size={18} />
@@ -110,7 +110,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
             {/* Engagement */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="group">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
                         <Heart size={12} className="text-pink-500" /> 最小いいね数
                     </label>
                     <input
@@ -118,12 +118,13 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         name="minFaves"
                         value={formData.minFaves}
                         onChange={handleChange}
+                        step="100"
                         placeholder="0"
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all duration-200"
+                        className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     />
                 </div>
                 <div className="group">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
                         <Repeat size={12} className="text-green-500" /> 最小リツイート数
                     </label>
                     <input
@@ -131,12 +132,13 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         name="minRetweets"
                         value={formData.minRetweets}
                         onChange={handleChange}
+                        step="100"
                         placeholder="0"
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200"
+                        className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     />
                 </div>
                 <div className="col-span-2 group">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
                         <MessageCircle size={12} className="text-blue-500" /> 最小返信数
                     </label>
                     <input
@@ -144,8 +146,9 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         name="minReplies"
                         value={formData.minReplies}
                         onChange={handleChange}
+                        step="100"
                         placeholder="0"
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                        className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     />
                 </div>
             </div>
@@ -153,7 +156,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
             {/* Date Range */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="group">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
                         <Calendar size={12} /> 開始日 (Since)
                     </label>
                     <input
@@ -161,11 +164,11 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         name="since"
                         value={formData.since}
                         onChange={handleChange}
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                        className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                     />
                 </div>
                 <div className="group">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-1.5 flex items-center gap-1.5 uppercase tracking-wide">
                         <Calendar size={12} /> 終了日 (Until)
                     </label>
                     <input
@@ -173,15 +176,15 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         name="until"
                         value={formData.until}
                         onChange={handleChange}
-                        className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                        className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                     />
                 </div>
             </div>
 
             {/* Filters */}
             <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wide">フィルタ</label>
-                <div className="flex gap-2">
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-300 mb-2 uppercase tracking-wide">フィルタ</label>
+                <div className="flex flex-wrap gap-2">
                     <FilterButton
                         active={formData.filters.images}
                         onClick={() => handleFilterChange('images')}
@@ -214,7 +217,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                 </button>
                 <button
                     onClick={handleSave}
-                    className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow transition-all duration-200"
+                    className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2.5 rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow transition-all duration-200"
                     title="プリセット保存"
                 >
                     <Save size={20} />
