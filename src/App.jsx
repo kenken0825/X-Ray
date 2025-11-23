@@ -128,29 +128,28 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-white p-4 transition-colors duration-300">
-      <div className="max-w-md mx-auto glass rounded-2xl shadow-xl overflow-hidden">
-        <header className="px-6 py-4 border-b border-slate-200/50 dark:border-slate-700/50 flex justify-between items-center backdrop-blur-md bg-white/30 dark:bg-slate-900/30">
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 text-slate-900 dark:text-white p-2 transition-colors duration-300 flex flex-col justify-center">
+      <div className="w-full max-w-md mx-auto glass rounded-xl shadow-xl overflow-hidden">
+        <header className="px-4 py-3 border-b border-slate-200/50 dark:border-slate-700/50 flex justify-between items-center backdrop-blur-md bg-white/30 dark:bg-slate-900/30">
+          <div className="flex items-center gap-2.5">
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full opacity-75 group-hover:opacity-100 transition duration-200 blur-[2px]"></div>
-              <img src="/icon.png" alt="X-Ray" className="relative w-8 h-8 rounded-full bg-white dark:bg-slate-800 object-cover" />
+              <img src="/icon.png" alt="X-Ray" className="relative w-7 h-7 rounded-full bg-white dark:bg-slate-800 object-cover" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 tracking-tight drop-shadow-sm">X-Ray</h1>
-              <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Research Cockpit</p>
+              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 tracking-tight drop-shadow-sm">X-Ray</h1>
             </div>
           </div>
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md transition-all duration-200 border border-slate-200/50 dark:border-slate-700/50"
+            className="p-1.5 rounded-full bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md transition-all duration-200 border border-slate-200/50 dark:border-slate-700/50"
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
         </header>
 
-        <main className="p-6 space-y-8">
+        <main className="p-4 space-y-4">
           <section>
             <SearchForm
               formData={formData}
@@ -159,7 +158,7 @@ function App() {
             />
           </section>
 
-          <section className="border-t border-slate-200/50 dark:border-slate-700/50 pt-6">
+          <section className="border-t border-slate-200/50 dark:border-slate-700/50 pt-4">
             <ExtractionPanel
               count={extractedTweets.length}
               onExtract={handleExtract}
@@ -170,7 +169,7 @@ function App() {
             />
           </section>
 
-          <section className="border-t border-slate-200/50 dark:border-slate-700/50 pt-6">
+          <section className="border-t border-slate-200/50 dark:border-slate-700/50 pt-4">
             <PresetList
               presets={presets}
               onLoad={handleLoadPreset}
