@@ -34,6 +34,9 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
+  const [targetCount, setTargetCount] = useState(50);
+  const [autoScroll, setAutoScroll] = useState(false);
+
   useEffect(() => {
     loadPresets();
   }, []);
@@ -78,7 +81,12 @@ function App() {
     if (!tab) return;
 
     try {
-      const response = await chrome.tabs.sendMessage(tab.id, { action: 'EXTRACT_TWEETS' });
+      const response = await chrome.tabs.sendMessage(tab.id, {
+        action: 'EXTRACT_TWEETS',
+        autoScroll,
+        targetCount
+      });
+
       if (response && response.tweets) {
         setExtractedTweets(prev => {
           const newTweets = response.tweets;
@@ -168,6 +176,10 @@ function App() {
               onSaveMarkdown={handleSaveMarkdown}
               onSelectFolder={handleSelectFolder}
               onClear={handleClear}
+              targetCount={targetCount}
+              setTargetCount={setTargetCount}
+              autoScroll={autoScroll}
+              setAutoScroll={setAutoScroll}
             />
           </section>
 

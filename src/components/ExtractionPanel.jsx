@@ -1,7 +1,7 @@
 import React from 'react';
 import { Download, Database, Trash2, FileText, Folder } from 'lucide-react';
 
-export default function ExtractionPanel({ onExtract, onDownload, onSaveMarkdown, onSelectFolder, onClear, count }) {
+export default function ExtractionPanel({ onExtract, onDownload, onSaveMarkdown, onSelectFolder, onClear, count, targetCount, setTargetCount, autoScroll, setAutoScroll }) {
     return (
         <div className="space-y-2">
             <div className="glass-card rounded-lg p-3 border border-white/50 dark:border-white/10 shadow-lg">
@@ -12,6 +12,33 @@ export default function ExtractionPanel({ onExtract, onDownload, onSaveMarkdown,
                             {count}
                         </span>
                         <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 mt-1">tweets</span>
+                    </div>
+                </div>
+
+                {/* Auto-Scroll Settings */}
+                <div className="mb-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-700/50">
+                    <div className="flex items-center justify-between mb-2">
+                        <label className="text-[10px] font-medium text-slate-600 dark:text-slate-300 flex items-center gap-1">
+                            <input
+                                type="checkbox"
+                                checked={autoScroll}
+                                onChange={(e) => setAutoScroll(e.target.checked)}
+                                className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5"
+                            />
+                            自動スクロール
+                        </label>
+                        {autoScroll && (
+                            <div className="flex items-center gap-1">
+                                <span className="text-[10px] text-slate-400">目標:</span>
+                                <input
+                                    type="number"
+                                    value={targetCount}
+                                    onChange={(e) => setTargetCount(Number(e.target.value))}
+                                    className="w-12 px-1 py-0.5 text-[10px] text-right rounded border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 focus:outline-none focus:border-blue-500"
+                                    min="1"
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
 
