@@ -11,6 +11,7 @@ import { Moon, Sun } from 'lucide-react';
 function App() {
   const [formData, setFormData] = useState({
     keyword: '',
+    fromUser: '',
     minFaves: '',
     minRetweets: '',
     minReplies: '',

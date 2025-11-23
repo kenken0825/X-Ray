@@ -1,8 +1,7 @@
-import { Search, Save, Calendar, Heart, Repeat, Image, Video, Link as LinkIcon, MessageCircle } from 'lucide-react';
+import { Search, Save, Calendar, Heart, Repeat, Image, Video, Link as LinkIcon, MessageCircle, User } from 'lucide-react';
 import { buildQuery } from '../utils/queryBuilder';
 
 export default function SearchForm({ formData, onChange, onSavePreset }) {
-    // ... existing handlers ...
     const handleChange = (e) => {
         const { name, value } = e.target;
         onChange({ ...formData, [name]: value });
@@ -16,6 +15,32 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                 [filterName]: !formData.filters[filterName]
             }
         });
+    };
+
+    const handleGetCurrentUser = async () => {
+        const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+        if (!tab || !tab.url) return;
+
+        try {
+            const url = new URL(tab.url);
+            if (url.hostname === 'x.com' || url.hostname === 'twitter.com') {
+                const pathParts = url.pathname.split('/').filter(Boolean);
+                if (pathParts.length > 0) {
+                    // The first part of the path is usually the username (e.g., x.com/username)
+                    // Exclude reserved paths if necessary, but simple extraction is usually enough
+                    const username = pathParts[0];
+                    if (!['home', 'explore', 'notifications', 'messages', 'search'].includes(username)) {
+                        onChange({ ...formData, fromUser: username });
+                    } else {
+                        alert('ユーザープロフィールページを開いてください');
+                    }
+                }
+            } else {
+                alert('X (Twitter) のページを開いてください');
+            }
+        } catch (e) {
+            console.error('Failed to parse URL', e);
+        }
     };
 
     const handleSearch = () => {
@@ -54,6 +79,31 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 pl-9 transition-colors"
                     />
                     <Search className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                </div>
+            </div>
+
+            {/* From User */}
+            <div>
+                <label className="block text-xs font-medium text-slate-400 dark:text-slate-400 text-slate-600 mb-1">ユーザー指定 (From)</label>
+                <div className="flex gap-2">
+                    <div className="relative flex-1">
+                        <input
+                            type="text"
+                            name="fromUser"
+                            value={formData.fromUser}
+                            onChange={handleChange}
+                            placeholder="ユーザー名 (@なし)"
+                            className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded px-3 py-2 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 pl-9 transition-colors"
+                        />
+                        <User className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                    </div>
+                    <button
+                        onClick={handleGetCurrentUser}
+                        className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 p-2 rounded border border-slate-300 dark:border-slate-600 transition-colors"
+                        title="現在のタブからユーザー名を取得"
+                    >
+                        <User size={18} />
+                    </button>
                 </div>
             </div>
 

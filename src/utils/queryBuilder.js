@@ -13,11 +13,15 @@
  * @param {boolean} [params.filters.noLinks] - -filter:links
  * @returns {string} The constructed query string
  */
-export const buildQuery = ({ keyword, minFaves, minRetweets, minReplies, since, until, filters = {} }) => {
+export const buildQuery = ({ keyword, fromUser, minFaves, minRetweets, minReplies, since, until, filters = {} }) => {
     const parts = [];
 
     if (keyword) {
         parts.push(keyword.trim());
+    }
+
+    if (fromUser) {
+        parts.push(`from:${fromUser.replace('@', '')}`);
     }
 
     if (minFaves) {
