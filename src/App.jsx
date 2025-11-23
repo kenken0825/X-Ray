@@ -143,6 +143,7 @@ function App() {
           </div>
           <button
             onClick={toggleTheme}
+            data-testid="theme-toggle-button"
             className="p-1.5 rounded-full bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md transition-all duration-200 border border-slate-200/50 dark:border-slate-700/50"
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >

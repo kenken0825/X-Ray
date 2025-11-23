@@ -96,6 +96,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     <input
                         type="text"
                         name="keyword"
+                        data-testid="search-keyword-input"
                         value={formData.keyword}
                         onChange={handleChange}
                         placeholder="検索ワードを入力..."
@@ -113,6 +114,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                         <input
                             type="text"
                             name="fromUser"
+                            data-testid="search-from-user-input"
                             value={formData.fromUser}
                             onChange={handleChange}
                             placeholder="ユーザー名 (@なし)"
@@ -122,6 +124,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     </div>
                     <button
                         onClick={handleGetCurrentUser}
+                        data-testid="get-current-user-button"
                         className="bg-slate-100 dark:bg-slate-800 hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg border border-slate-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-700 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-sm transition-all duration-200"
                         title="現在のタブからユーザー名を取得"
                     >
@@ -139,6 +142,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     <input
                         type="number"
                         name="minFaves"
+                        data-testid="search-min-faves-input"
                         value={formData.minFaves}
                         onChange={handleChange}
                         step="100"
@@ -153,6 +157,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     <input
                         type="number"
                         name="minRetweets"
+                        data-testid="search-min-retweets-input"
                         value={formData.minRetweets}
                         onChange={handleChange}
                         step="100"
@@ -167,6 +172,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     <input
                         type="number"
                         name="minReplies"
+                        data-testid="search-min-replies-input"
                         value={formData.minReplies}
                         onChange={handleChange}
                         step="100"
@@ -185,6 +191,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     <input
                         type="date"
                         name="since"
+                        data-testid="search-since-date-input"
                         value={formData.since}
                         onChange={handleChange}
                         className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
@@ -197,6 +204,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                     <input
                         type="date"
                         name="until"
+                        data-testid="search-until-date-input"
                         value={formData.until}
                         onChange={handleChange}
                         className="w-full bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-600 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
@@ -209,6 +217,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                 <label className="block text-[10px] font-bold text-slate-500 dark:text-white mb-1 uppercase tracking-wider">言語</label>
                 <select
                     name="language"
+                    data-testid="search-language-select"
                     value={formData.language || ''}
                     onChange={handleChange}
                     className="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
@@ -248,6 +257,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
             <div className="flex gap-2 pt-1">
                 <button
                     onClick={handleSearch}
+                    data-testid="search-execute-button"
                     className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm"
                 >
                     <Search size={16} />
@@ -255,6 +265,7 @@ export default function SearchForm({ formData, onChange, onSavePreset }) {
                 </button>
                 <button
                     onClick={handleSave}
+                    data-testid="search-save-preset-button"
                     className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 p-2 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm hover:shadow transition-all duration-200"
                     title="プリセット保存"
                 >
