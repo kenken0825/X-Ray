@@ -143,7 +143,7 @@ function App() {
           <div className="flex items-center gap-2.5">
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full opacity-75 group-hover:opacity-100 transition duration-200 blur-[2px]"></div>
-              <img src="/icon.png" alt="X-Ray" className="relative w-7 h-7 rounded-full bg-white dark:bg-slate-800 object-cover" />
+              <img src="/app-icon.png" alt="X-Ray" className="relative w-7 h-7 rounded-full bg-white dark:bg-slate-800 object-cover" />
             </div>
             <div>
               <h1 className={`text-lg font-bold tracking-tight drop-shadow-sm ${theme === 'dark' ? 'text-white' : 'bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600'}`}>X-Ray</h1>
